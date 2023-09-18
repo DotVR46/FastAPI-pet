@@ -1,4 +1,8 @@
-from fastapi import APIRouter
+from typing import Annotated
+
+from fastapi import APIRouter, Path, Depends
+
+from app.users.schemas import CreateUser
 
 users_router = APIRouter()
 
@@ -15,8 +19,14 @@ async def get_users_list():
 
 
 @users_router.get("/{user_id}")
-async def get_user(user_id: int):
+async def get_user(user_id: Annotated[int, Path(ge=1, lt=1_000_000)]):
     for user in users:
         if user["id"] == user_id:
             return {"user": user}
     return {"message": "User not found."}
+
+
+@users_router.post("/create")
+async def create_user(user: CreateUser):
+    users.append(dict(user))
+    return {"message": "User created", "user": user}

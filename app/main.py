@@ -15,4 +15,4 @@ async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
 
-app.include_router(users_router, prefix="/users", tags=["users"])
+app.include_router(users_router, prefix="/users", tags=["Users"])
