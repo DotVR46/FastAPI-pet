@@ -1,18 +1,13 @@
+import uvicorn
 from fastapi import FastAPI
 
-from app.users.views import users_router
+from app.users.views import router as users_router
 
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+app.include_router(users_router, prefix="/users", tags=["Users"])
 
 
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
-
-
-app.include_router(users_router, prefix="/users", tags=["users"])
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
