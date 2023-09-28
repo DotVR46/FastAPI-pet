@@ -41,3 +41,4 @@ async def delete_item(
     item: Item,
 ) -> None:
     await session.delete(item)
+    await session.commit()

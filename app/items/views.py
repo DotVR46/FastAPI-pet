@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from .dependencies import get_item_by_id
 from . import crud
@@ -15,7 +15,11 @@ async def get_items(
     return await crud.get_items(session=session)
 
 
-@router.post("/", response_model=Item)
+@router.post(
+    "/",
+    response_model=Item,
+    status_code=status.HTTP_201_CREATED,
+)
 async def create_item(
     item_in: ItemCreate,
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
@@ -55,3 +59,11 @@ async def update_item_partial(
         item_update=item_update,
         partial=True,
     )
+
+
+@router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_item(
+    item: Item = Depends(get_item_by_id),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> None:
+    await crud.delete_item(session=session, item=item)
