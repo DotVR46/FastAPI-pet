@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     async_scoped_session,
 )
-from sqlalchemy.orm import sessionmaker
 
 from app.core.config import settings
 
