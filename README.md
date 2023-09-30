@@ -1,1 +1,1 @@
-# **Создание клона habitica.com используя FastAPI**
+# **Учу FastAPI**
