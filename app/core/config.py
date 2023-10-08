@@ -1,14 +1,20 @@
-from os import getenv
 from pathlib import Path
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings
 
 BASE_DIR = Path(__file__).parent.parent.parent
-print(BASE_DIR)
+DB_PATH = BASE_DIR / "db.sqlite3"
+
+
+class DbSettings(BaseModel):
+    url: str = f"sqlite+aiosqlite:///{DB_PATH}"
+    echo: bool = False
 
 
 class Settings(BaseSettings):
-    db_url: str = f"sqlite+aiosqlite:///{BASE_DIR}/db.sqlite3"
+    db: DbSettings = DbSettings()
     # db_echo: bool = False
+    api_v1_prefix: str = "/api/v1"
     db_echo: bool = True
 
 
